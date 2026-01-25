@@ -3,16 +3,17 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/arran4/sentencestats/pkg/analyze"
 	"github.com/vdobler/chart"
 	"github.com/vdobler/chart/imgg"
 	"image"
 	"image/color"
 	"image/draw"
 	"image/png"
-	"io/ioutil"
+	"io"
+	"log"
 	"math/rand"
 	"os"
-	"unicode"
 )
 
 var (
@@ -21,32 +22,14 @@ var (
 
 func main() {
 	flag.Parse()
-	b, _ := ioutil.ReadAll(os.Stdin)
+	b, err := io.ReadAll(os.Stdin)
+	if err != nil {
+		log.Fatalf("Failed to read from stdin: %v", err)
+	}
 	s := string(b)
-	type Sentence struct {
-		Hist     [26]float64
-		Sentence string
-		Count    int
-	}
-	sentences := []Sentence{{}}
-	for _, r := range []rune(s) {
-		if unicode.IsLetter(r) {
-			c := unicode.ToLower(r)
-			sentences[len(sentences)-1].Hist[c-'a'] += 1
-			sentences[len(sentences)-1].Sentence += fmt.Sprintf("%c", r)
-			sentences[len(sentences)-1].Count++
-		} else {
-			switch r {
-			case '.':
-				sentences = append(sentences, Sentence{})
-			case '\r', '\n':
-			case '\t':
-				sentences[len(sentences)-1].Sentence += fmt.Sprintf(" ")
-			default:
-				sentences[len(sentences)-1].Sentence += fmt.Sprintf("%c", r)
-			}
-		}
-	}
+
+	sentences := analyze.AnalyzeCharacters(s)
+
 	c := chart.BarChart{Title: "Character frequency", Stacked: true}
 	x := []float64{}
 	c.XRange.Category = []string{}
@@ -67,7 +50,7 @@ func main() {
 
 	f, err := os.Create(*outputFile)
 	if err != nil {
-		panic(err)
+		log.Fatalf("Failed to create output file: %v", err)
 	}
 	defer f.Close()
 
@@ -77,5 +60,4 @@ func main() {
 	draw.Draw(i, i.Bounds(), bg, image.Point{}, draw.Src)
 	c.Plot(igr)
 	png.Encode(f, i)
-
 }

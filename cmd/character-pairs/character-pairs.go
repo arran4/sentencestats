@@ -3,18 +3,18 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/arran4/sentencestats/pkg/analyze"
 	"github.com/vdobler/chart"
 	"github.com/vdobler/chart/imgg"
 	"image"
 	"image/color"
 	"image/draw"
 	"image/png"
-	"io/ioutil"
+	"io"
 	"log"
 	"math/rand"
 	"os"
 	"sort"
-	"unicode"
 )
 
 var (
@@ -23,53 +23,14 @@ var (
 
 func main() {
 	flag.Parse()
-	b, _ := ioutil.ReadAll(os.Stdin)
+	b, err := io.ReadAll(os.Stdin)
+	if err != nil {
+		log.Fatalf("Failed to read from stdin: %v", err)
+	}
 	s := string(b)
-	allPairs := map[string]float64{}
-	stackPairs := map[string]float64{}
-	type Sentence struct {
-		Pairs    map[string]float64
-		Sentence string
-		Count    int
-	}
-	sentences := []Sentence{{
-		Pairs:    map[string]float64{},
-		Sentence: "",
-		Count:    0,
-	}}
-	var prev rune = 0
-	for _, r := range []rune(s) {
-		if unicode.IsLetter(r) {
-			c := unicode.ToLower(r)
-			if prev > 0 {
-				s := string([]rune{c, prev})
-				if prev > r {
-					s = string([]rune{prev, c})
-				}
-				allPairs[s] += 1
-				stackPairs[s] = 0
-				sentences[len(sentences)-1].Pairs[s] += 1
-				sentences[len(sentences)-1].Count++
-			}
-			sentences[len(sentences)-1].Sentence += fmt.Sprintf("%c", r)
-			prev = unicode.ToLower(r)
-		} else {
-			prev = 0
-			switch r {
-			case '.':
-				sentences = append(sentences, Sentence{
-					Pairs:    map[string]float64{},
-					Sentence: "",
-					Count:    0,
-				})
-			case '\r', '\n':
-			case '\t':
-				sentences[len(sentences)-1].Sentence += fmt.Sprintf(" ")
-			default:
-				sentences[len(sentences)-1].Sentence += fmt.Sprintf("%c", r)
-			}
-		}
-	}
+
+	sentences, allPairs := analyze.AnalyzePairs(s)
+
 	c := chart.BarChart{Title: "Character Pair frequency", Stacked: true}
 	x := []float64{}
 	c.XRange.Label = "Character Pair"
@@ -103,7 +64,7 @@ func main() {
 
 	f, err := os.Create(*outputFile)
 	if err != nil {
-		panic(err)
+		log.Fatalf("Failed to create output file: %v", err)
 	}
 	defer f.Close()
 
@@ -115,5 +76,4 @@ func main() {
 	draw.Draw(i, i.Bounds(), bg, image.Point{}, draw.Src)
 	c.Plot(igr)
 	png.Encode(f, i)
-
 }

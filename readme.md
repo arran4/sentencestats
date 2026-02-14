@@ -54,13 +54,3 @@ To run tests:
 ```bash
 go test ./...
 ```
-
-### Code Generation
-
-This project uses [go-subcommand](https://github.com/arran4/go-subcommand) to generate the CLI for `sentencestats`.
-
-To regenerate the CLI code:
-
-```bash
-go generate ./pkg/cli
-```

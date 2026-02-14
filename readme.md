@@ -10,11 +10,10 @@ Sentence Stats is a Go tool for visualizing character and character pair frequen
 
 ## Installation
 
-Ensure you have Go installed (version 1.22+).
+Ensure you have Go installed (version 1.25+).
 
 ```bash
-go install github.com/arran4/sentencestats/cmd/characters@latest
-go install github.com/arran4/sentencestats/cmd/character-pairs@latest
+go install github.com/arran4/sentencestats/cmd/sentencestats@latest
 ```
 
 ## Usage
@@ -24,7 +23,7 @@ The tools read from standard input and output a PNG file.
 ### Character Frequency
 
 ```bash
-echo "This is an example. This is also a test. This is also a demo." | characters -o characters-example.png
+echo "This is an example. This is also a test. This is also a demo." | sentencestats characters -o characters-example.png
 ```
 
 Output:
@@ -34,7 +33,7 @@ Output:
 ### Character Pair Frequency
 
 ```bash
-echo "This is an example. This is also a test. This is also a demo." | character-pairs -o character-pairs-example.png
+echo "This is an example. This is also a test. This is also a demo." | sentencestats character-pairs -o character-pairs-example.png
 ```
 
 Output:
@@ -46,8 +45,8 @@ Output:
 To run the tools from source:
 
 ```bash
-go run ./cmd/characters/ -o out.png < input.txt
-go run ./cmd/character-pairs/ -o out.png < input.txt
+go run ./cmd/sentencestats/ characters -o out.png < input.txt
+go run ./cmd/sentencestats/ character-pairs -o out.png < input.txt
 ```
 
 To run tests:

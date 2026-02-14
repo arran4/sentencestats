@@ -6,7 +6,9 @@ before:
     - go mod tidy
 
 builds:
-  - env:
+  - id: sentencestats
+    main: ./cmd/sentencestats
+    env:
       - CGO_ENABLED=0
     goos:
       - linux
@@ -15,6 +17,10 @@ builds:
     goarch:
       - amd64
       - arm64
+      - arm
+    goarm:
+      - 6
+      - 7
 
 archives:
   - format: tar.gz
@@ -22,6 +28,9 @@ archives:
     files:
       - LICENSE
       - README.md
+    format_overrides:
+      - goos: windows
+        format: zip
 
 checksum:
   name_template: 'checksums.txt'
@@ -35,3 +44,18 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
+
+nfpms:
+  - id: sentencestats
+    package_name: sentencestats
+    vendor: arran4
+    homepage: https://github.com/arran4/
+    maintainer: arran4 <arran4@users.noreply.github.com>
+    description: Sentence Stats is a Go tool for visualizing character and character pair frequencies in sentences.
+    license: BSD-3-Clause
+    formats:
+      - deb
+      - rpm
+      - apk
+      - termux.deb
+      - archlinux

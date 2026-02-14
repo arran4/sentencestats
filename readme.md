@@ -15,6 +15,8 @@ Ensure you have Go installed (version 1.22+).
 ```bash
 go install github.com/arran4/sentencestats/cmd/characters@latest
 go install github.com/arran4/sentencestats/cmd/character-pairs@latest
+# Or the unified tool:
+go install github.com/arran4/sentencestats/cmd/sentencestats@latest
 ```
 
 ## Usage
@@ -48,10 +50,22 @@ To run the tools from source:
 ```bash
 go run ./cmd/characters/ -o out.png < input.txt
 go run ./cmd/character-pairs/ -o out.png < input.txt
+# Or using sentencestats
+go run ./cmd/sentencestats/ characters -o out.png < input.txt
 ```
 
 To run tests:
 
 ```bash
 go test ./...
+```
+
+### Code Generation
+
+This project uses [go-subcommand](https://github.com/arran4/go-subcommand) to generate the CLI for `sentencestats`.
+
+To regenerate the CLI code:
+
+```bash
+go generate ./pkg/cli
 ```

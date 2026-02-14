@@ -1,8 +1,6 @@
 module github.com/arran4/sentencestats
 
-go 1.24.0
-
-toolchain go1.24.3
+go 1.25.3
 
 require github.com/vdobler/chart v1.0.0
 

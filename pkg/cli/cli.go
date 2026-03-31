@@ -1,3 +1,4 @@
+// Package cli provides CLI subcommands for sentencestats.
 package cli
 
 import (
@@ -53,14 +54,20 @@ func Characters(output string) {
 	if err != nil {
 		log.Fatalf("Failed to create output file: %v", err)
 	}
-	defer f.Close()
+	defer func() {
+		if err := f.Close(); err != nil {
+			log.Printf("Failed to close output file: %v", err)
+		}
+	}()
 
 	i := image.NewRGBA(image.Rect(0, 0, 900, 416))
 	igr := imgg.AddTo(i, 0, 0, 900, 416, color.RGBA{0xff, 0xff, 0xff, 0xff}, nil, nil)
 	bg := image.NewUniform(color.RGBA{0xff, 0xff, 0xff, 0xff})
 	draw.Draw(i, i.Bounds(), bg, image.Point{}, draw.Src)
 	c.Plot(igr)
-	png.Encode(f, i)
+	if err := png.Encode(f, i); err != nil {
+		log.Printf("Failed to encode png: %v", err)
+	}
 }
 
 // CharacterPairs is a subcommand `sentencestats character-pairs`
@@ -100,7 +107,7 @@ func CharacterPairs(output string) {
 		co := chart.Style{Symbol: '#', LineColor: color.NRGBA{0x00, 0x00, 0xff, 0xff}, LineWidth: 3, FillColor: color.NRGBA{byte(rand.Intn(255)), byte(rand.Intn(255)), byte(rand.Intn(255)), 0xff}}
 		vs := []float64{}
 		for _, p := range order {
-			v, _ := s.Pairs[p]
+			v := s.Pairs[p]
 			vs = append(vs, v)
 		}
 		log.Printf("%#v", vs)
@@ -112,7 +119,11 @@ func CharacterPairs(output string) {
 	if err != nil {
 		log.Fatalf("Failed to create output file: %v", err)
 	}
-	defer f.Close()
+	defer func() {
+		if err := f.Close(); err != nil {
+			log.Printf("Failed to close output file: %v", err)
+		}
+	}()
 
 	const width = 1600
 	height := 416
@@ -121,5 +132,7 @@ func CharacterPairs(output string) {
 	bg := image.NewUniform(color.RGBA{0xff, 0xff, 0xff, 0xff})
 	draw.Draw(i, i.Bounds(), bg, image.Point{}, draw.Src)
 	c.Plot(igr)
-	png.Encode(f, i)
+	if err := png.Encode(f, i); err != nil {
+		log.Printf("Failed to encode png: %v", err)
+	}
 }

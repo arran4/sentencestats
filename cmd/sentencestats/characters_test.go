@@ -16,7 +16,7 @@ func TestCharacters_Execute(t *testing.T) {
 	cmd := parent.NewCharacters()
 
 	called := false
-	cmd.CommandAction = func(c *Characters) error {
+	cmd.CommandAction = func(_ *Characters) error {
 		called = true
 		return nil
 	}

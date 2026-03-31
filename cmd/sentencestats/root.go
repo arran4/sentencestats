@@ -88,7 +88,7 @@ func NewRoot(name, version, commit, date string) (*RootCmd, error) {
 	c.Commands["character-pairs"] = c.NewCharacterPairs()
 	c.Commands["characters"] = c.NewCharacters()
 	c.Commands["help"] = &InternalCommand{
-		Exec: func(_ []string) error {
+		Exec: func(args []string) error {
 			for _, arg := range args {
 				if arg == "-deep" {
 					c.UsageRecursive()
@@ -101,7 +101,7 @@ func NewRoot(name, version, commit, date string) (*RootCmd, error) {
 		UsageFunc: c.Usage,
 	}
 	c.Commands["usage"] = &InternalCommand{
-		Exec: func(_ []string) error {
+		Exec: func(args []string) error {
 			for _, arg := range args {
 				if arg == "-deep" {
 					c.UsageRecursive()

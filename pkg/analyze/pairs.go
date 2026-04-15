@@ -13,8 +13,8 @@ type PairSentence struct {
 	Count    int
 }
 
-// AnalyzePairs returns pair frequencies for each sentence and total.
-func AnalyzePairs(s string) ([]PairSentence, map[string]float64) {
+// Pairs returns pair frequencies for each sentence and total.
+func Pairs(s string) ([]PairSentence, map[string]float64) {
 	allPairs := map[string]float64{}
 	sentences := []PairSentence{{
 		Pairs:    map[string]float64{},

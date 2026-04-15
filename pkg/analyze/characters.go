@@ -13,8 +13,8 @@ type CharSentence struct {
 	Count    int
 }
 
-// AnalyzeCharacters returns the character frequency of each sentence.
-func AnalyzeCharacters(s string) []CharSentence {
+// Characters returns the character frequency of each sentence.
+func Characters(s string) []CharSentence {
 	sentences := []CharSentence{{}}
 	for _, r := range s {
 		if unicode.IsLetter(r) {

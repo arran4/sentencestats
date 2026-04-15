@@ -1,3 +1,4 @@
+// Package main provides the character-pairs CLI.
 package main
 
 import (

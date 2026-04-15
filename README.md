@@ -8,13 +8,24 @@ Sentence Stats is a Go tool for visualizing character and character pair frequen
 - **Character Pair Frequency**: Visualizes the frequency of character pairs (bigrams), ignoring order (e.g., "ab" and "ba" are counted together).
 - **Sentence-based Analysis**: Processes input sentence by sentence (split by '.').
 
-## Installation
+## Install
 
-Ensure you have Go installed (version 1.25+).
+### GitHub Releases
+Download binaries from: https://github.com/arran4/sentencestats/releases
 
-```bash
+### Homebrew
+brew tap arran4/homebrew-tap
+brew install sentencestats
+
+### Go install
 go install github.com/arran4/sentencestats/cmd/sentencestats@latest
-```
+
+### Native packages
+- Debian/Ubuntu (`.deb`): see Releases assets
+- RPM (`.rpm`): see Releases assets
+- Alpine (`.apk`): see Releases assets
+- Arch (`.pkg.tar.zst` or repo): see Releases assets
+
 
 ## Usage
 

@@ -1,3 +1,4 @@
+// Package analyze provides text analysis utilities.
 package analyze
 
 import (
@@ -5,12 +6,14 @@ import (
 	"unicode"
 )
 
+// PairSentence holds character pair frequencies for a sentence.
 type PairSentence struct {
 	Pairs    map[string]float64
 	Sentence string
 	Count    int
 }
 
+// AnalyzePairs returns pair frequencies for each sentence and total.
 func AnalyzePairs(s string) ([]PairSentence, map[string]float64) {
 	allPairs := map[string]float64{}
 	sentences := []PairSentence{{
@@ -18,8 +21,8 @@ func AnalyzePairs(s string) ([]PairSentence, map[string]float64) {
 		Sentence: "",
 		Count:    0,
 	}}
-	var prev rune = 0
-	for _, r := range []rune(s) {
+	var prev rune
+	for _, r := range s {
 		if unicode.IsLetter(r) {
 			c := unicode.ToLower(r)
 			if prev > 0 {
@@ -28,8 +31,8 @@ func AnalyzePairs(s string) ([]PairSentence, map[string]float64) {
 					p1, p2 = p2, p1
 				}
 				s := string([]rune{p1, p2})
-				allPairs[s] += 1
-				sentences[len(sentences)-1].Pairs[s] += 1
+				allPairs[s] ++
+				sentences[len(sentences)-1].Pairs[s] ++
 				sentences[len(sentences)-1].Count++
 			}
 			sentences[len(sentences)-1].Sentence += fmt.Sprintf("%c", r)

@@ -1,3 +1,4 @@
+// Package analyze provides text analysis utilities.
 package analyze
 
 import (
@@ -5,18 +6,20 @@ import (
 	"unicode"
 )
 
+// CharSentence holds character frequency for a sentence.
 type CharSentence struct {
 	Hist     [26]float64
 	Sentence string
 	Count    int
 }
 
+// AnalyzeCharacters returns the character frequency of each sentence.
 func AnalyzeCharacters(s string) []CharSentence {
 	sentences := []CharSentence{{}}
-	for _, r := range []rune(s) {
+	for _, r := range s {
 		if unicode.IsLetter(r) {
 			c := unicode.ToLower(r)
-			sentences[len(sentences)-1].Hist[c-'a'] += 1
+			sentences[len(sentences)-1].Hist[c-'a'] ++
 			sentences[len(sentences)-1].Sentence += fmt.Sprintf("%c", r)
 			sentences[len(sentences)-1].Count++
 		} else {

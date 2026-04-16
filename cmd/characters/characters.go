@@ -1,3 +1,4 @@
+// Package main provides the characters CLI.
 package main
 
 import (

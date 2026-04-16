@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestAnalyzePairs(t *testing.T) {
+func TestPairs(t *testing.T) {
 	tests := []struct {
 		name          string
 		input         string
@@ -39,7 +39,7 @@ func TestAnalyzePairs(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			sentences, allPairs := AnalyzePairs(tt.input)
+			sentences, allPairs := Pairs(tt.input)
 
 			if len(sentences) != 1 {
 				t.Fatalf("expected 1 sentence, got %d", len(sentences))

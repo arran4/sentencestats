@@ -30,7 +30,7 @@ func Characters(output string) {
 	}
 	s := string(b)
 
-	sentences := analyze.AnalyzeCharacters(s)
+	sentences := analyze.Characters(s)
 
 	c := chart.BarChart{Title: "Character frequency", Stacked: true}
 	x := []float64{}
@@ -82,7 +82,7 @@ func CharacterPairs(output string) {
 	}
 	s := string(b)
 
-	sentences, allPairs := analyze.AnalyzePairs(s)
+	sentences, allPairs := analyze.Pairs(s)
 
 	c := chart.BarChart{Title: "Character Pair frequency", Stacked: true}
 	x := []float64{}

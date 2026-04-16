@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestAnalyzeCharacters(t *testing.T) {
+func TestCharacters(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    string
@@ -44,26 +44,26 @@ func TestAnalyzeCharacters(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := AnalyzeCharacters(tt.input)
+			got := Characters(tt.input)
 			if len(got) != len(tt.expected) {
-				t.Errorf("AnalyzeCharacters() got %d sentences, want %d", len(got), len(tt.expected))
+				t.Errorf("Characters() got %d sentences, want %d", len(got), len(tt.expected))
 				return
 			}
 			for i, s := range got {
 				if s.Sentence != tt.expected[i].Sentence {
-					t.Errorf("AnalyzeCharacters()[%d].Sentence = %v, want %v", i, s.Sentence, tt.expected[i].Sentence)
+					t.Errorf("Characters()[%d].Sentence = %v, want %v", i, s.Sentence, tt.expected[i].Sentence)
 				}
 				if s.Count != tt.expected[i].Count {
-					t.Errorf("AnalyzeCharacters()[%d].Count = %v, want %v", i, s.Count, tt.expected[i].Count)
+					t.Errorf("Characters()[%d].Count = %v, want %v", i, s.Count, tt.expected[i].Count)
 				}
 			}
 		})
 	}
 }
 
-func TestAnalyzeCharacters_Hist(t *testing.T) {
+func TestCharacters_Hist(t *testing.T) {
 	s := "AaBbC"
-	got := AnalyzeCharacters(s)
+	got := Characters(s)
 	if len(got) != 1 {
 		t.Fatalf("expected 1 sentence, got %d", len(got))
 	}
